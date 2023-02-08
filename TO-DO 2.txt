@@ -1,0 +1,69 @@
+tasks = []
+
+def add_task(task, is_important=False):
+    tasks.append({"task": task, "important": is_important})
+    print(f"Task '{task}' added to the list.")
+
+def complete_task(task):
+    for t in tasks:
+        if t["task"] == task:
+            tasks.remove(t)
+            print(f"Task '{task}' completed.")
+            break
+    else:
+        print(f"Task '{task}' not found.")
+
+def list_tasks(show_important_only=False):
+    if not tasks:
+        print("No tasks found.")
+    else:
+        print("Tasks:")
+        for i, t in enumerate(tasks):
+            if not show_important_only or t["important"]:
+                print(f"{i+1}. {t['task']} (Important: {t['important']})")
+
+def edit_task(task, new_task, new_is_important=None):
+    for t in tasks:
+        if t["task"] == task:
+            t["task"] = new_task
+            if new_is_important is not None:
+                t["important"] = new_is_important
+            print(f"Task '{task}' edited to '{new_task}' (Important: {t['important']})")
+            break
+    else:
+        print(f"Task '{task}' not found.")
+
+while True:
+    print("""
+    Todo app:
+    1. Add task
+    2. Complete task
+    3. List tasks
+    4. Edit task
+    5. Quit
+    """)
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        task = input("Enter task: ")
+        is_important = input("Is it important (y/n)? ")
+        is_important = True if is_important == "y" else False
+        add_task(task, is_important)
+    elif choice == "2":
+        task = input("Enter task to complete: ")
+        complete_task(task)
+    elif choice == "3":
+        show_important_only = input("Show important tasks only (y/n)? ")
+        show_important_only = True if show_important_only == "y" else False
+        list_tasks(show_important_only)
+    elif choice == "4":
+        task = input("Enter task to edit: ")
+        new_task = input("Enter new task: ")
+        new_is_important = input("Is it important (y/n)? ")
+        new_is_important = True if new_is_important == "y" else False if new_is_important == "n" else None
+        edit_task(task, new_task, new_is_important)
+    elif choice == "5":
+        break
+    else:
+        print("Invalid choice.")
